@@ -1,0 +1,19 @@
+POST http://localhost:3000/api/depoimentos
+Content-Type: application/json
+
+{
+    "usuario_id": "shimit@gmail.com",
+    "usuario_nome": "Tadeu Shimit",
+    "is_USPIANO": true,
+    "depoimento_video": "./videos/arq12.mp4"
+}
+
+###
+GET http://localhost:3000/api/depoimentos
+
+
+###
+GET http://localhost:3000/api/depoimentos/647b9c467ee5d7a93f152db2
+
+###
+DELETE  http://localhost:3000/api/depoimentos/647ba22ec0e8d4f08f927059
