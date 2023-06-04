@@ -84,8 +84,8 @@ export default function WebcamVideo() {
         <div className="Container">
             <Webcam
                 height={400}
-                width={400}
-                audio={false}
+                width={320}
+                audio={true}
                 mirrored={true}
                 ref={webcamRef}
                 videoConstraints={videoConstraints}
