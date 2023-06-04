@@ -1,5 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import Webcam from "react-webcam";
+import axios from 'axios';
 
 export default function WebcamVideo() {
     const webcamRef = useRef(null);
@@ -50,6 +51,29 @@ export default function WebcamVideo() {
         }
     }, [recordedChunks]);
 
+    const handleUpload = useCallback(async () => {
+        if (recordedChunks.length) {
+            const blob = new Blob(recordedChunks, {
+                type: "video/webm",
+            });
+
+            const timestamps = new Date().toISOString().replace(/:/g, '-');
+            const filename = `video_${timestamps}.webm`;
+
+            const file = new File([blob], filename);
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                await axios.post('http://localhost:3000/api/videos', formData);
+                setRecordedChunks([]);
+            } catch (error) {
+                console.error('Error uploading video:', error);
+            }
+        }
+    }, [recordedChunks]);
+
     const videoConstraints = {
         width: 420,
         height: 420,
@@ -72,7 +96,7 @@ export default function WebcamVideo() {
                 <button onClick={handleStartCaptureClick}>Start Capture</button>
             )}
             {recordedChunks.length > 0 && (
-                <button onClick={handleDownload}>Download</button>
+                <button onClick={handleUpload}>Enviar</button>
             )}
         </div>
     );
