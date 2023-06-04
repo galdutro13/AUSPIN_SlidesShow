@@ -1,5 +1,7 @@
 import React from 'react';
 import WebcamVideo from "./webcam";
+import axios from 'axios';
+
 function Slides({slides}) {
     const [index, setIndex] = React.useState(0);
     const [nome, setNome] = React.useState('');
@@ -17,6 +19,22 @@ function Slides({slides}) {
             setEmail(event.target.value);
 
         console.log('value is:', event.target.value);
+    }
+
+    const handleSubmit = (video_name) => {
+        const depoimentoForm = {
+            usuario_id: email,
+            usuario_nome: nome,
+            is_USPIANO: is_pesquisador,
+            depoimento_video: video_name
+        }
+        try{
+            axios.post('http://localhost:3000/api/depoimentos', depoimentoForm);
+            alert("Depoimento enviado com sucesso!");
+            
+        }catch(error){
+                console.log(error);
+        }
     }
     return (
         <div>
@@ -55,7 +73,8 @@ function Slides({slides}) {
                 {slides[index]["subtitle"] && <h3
                     data-testid="subtitle">{slides[index]["subtitle"]}
                 </h3>}
-                {slides[index]["camera"] && <WebcamVideo />}
+
+                {slides[index]["camera"] && <WebcamVideo callback={handleSubmit} />}
                 {slides[index]["button"] && <button
                     data-testid="button-next"
                     onClick={() => setIndex(index + 1)}
