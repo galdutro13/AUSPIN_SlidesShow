@@ -9,7 +9,7 @@ const TermsAndConditions = () => {
   };
 
   return (
-    <div className="terms-container">
+    <div class="terms-container">
       <body>
         Autorizo a utilização das minhas voz e imagem no depoimento que irei gravar 
         nesta interação para que as mesmas possam ser divulgadas nos meios de 

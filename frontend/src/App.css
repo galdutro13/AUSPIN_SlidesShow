@@ -17,7 +17,10 @@ p {
   text-align: left;
 }
 
-
+body{
+  background-image: url(./components/Telas_Cabine_fundo-17.png);
+  background-size: cover;
+}
 
 #navigation {
   margin-bottom: 2rem;
@@ -31,9 +34,27 @@ p {
   border: 1px solid #eee;
   padding: 1rem;
   min-height: 320px;
+  max-height: 400px;
+  max-width: 650px;
   min-width: 650px;
+  position: absolute;
+  top: 250px; left: 120px;
 }
 
 button {
     min-width: 80px;
+}
+
+img {
+  overflow-clip-margin: content-box;
+  overflow: clip;
+  position: absolute;
+  left: 100px;
+  top: 20px;
+  height: auto;
+}
+
+.teste {
+  display: flex;
+  flex-direction: row;
 }
