@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
 import Webcam from "react-webcam";
 import axios from 'axios';
 
@@ -9,6 +9,27 @@ export default function WebcamVideo({ callback }) {
     const [recordedChunks, setRecordedChunks] = useState([]);
     const [filename, setFilename] = useState('');
     const [uploaded, setUploaded] = useState(false);
+    const [recordingTime, setRecordingTime] = useState(0);
+    const timerRef = useRef(null);
+
+    const startTimer = useCallback(() => {
+        let timer = 0;
+        timerRef.current = setInterval(() => {
+            timer += 1000;
+            setRecordingTime(timer);
+        }, 1000);
+    }, []);
+
+    const stopTimer = useCallback(() => {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+    }, []);
+
+    useEffect(() => {
+        if (capturing) {
+            startTimer();
+        }
+    }, [capturing, startTimer]);
 
     const handleDataAvailable = useCallback(
         ({ data }) => {
@@ -29,11 +50,18 @@ export default function WebcamVideo({ callback }) {
             handleDataAvailable
         );
         mediaRecorderRef.current.start();
+        setTimeout(() => {
+            mediaRecorderRef.current.stop(); 
+            setCapturing(false);
+            stopTimer();
+        }, 180000);
+
     }, [webcamRef, setCapturing, mediaRecorderRef, handleDataAvailable]);
 
     const handleStopCaptureClick = useCallback(() => {
         mediaRecorderRef.current.stop();
         setCapturing(false);
+        stopTimer();
     }, [mediaRecorderRef, setCapturing]);
 
     const handleDownload = useCallback(() => {
@@ -104,6 +132,7 @@ export default function WebcamVideo({ callback }) {
             {recordedChunks.length > 0 && uploaded == true && (
                 <button onClick={() => callback(filename)}>finalizar</button>
             )}
+            <p>Recording Time: {recordingTime / 1000} seconds</p>
         </div>
     );
 }

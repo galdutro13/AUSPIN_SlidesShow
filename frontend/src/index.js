@@ -51,7 +51,7 @@ const SLIDES = [
         camera: "video_recorder"
     },
     {
-        text: "Muito Obrigado",
+        title: "Muito Obrigado",
         subtitle: "A AUSPIN agradece sua colaboração",
     }
 ];

@@ -44,6 +44,7 @@ function Slides({slides}) {
         try{
             axios.post('http://localhost:3000/api/depoimentos', depoimentoForm);
             alert("Depoimento enviado com sucesso!");
+            setIndex(index + 1);
             
         }catch(error){
                 console.log(error);
