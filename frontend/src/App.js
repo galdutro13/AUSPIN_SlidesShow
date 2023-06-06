@@ -3,7 +3,7 @@ import './App.css';
 import 'h8k-components';
 
 import Slides from './components/Slides';
-const title = "Slideshow App";
+const title = "AUSPIN Quer Saber";
 
 function App({slides}) {
     return (

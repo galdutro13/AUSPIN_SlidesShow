@@ -1,0 +1,9 @@
+
+body {
+    margin: 2;
+    padding: 2;
+    font-family: sans-serif;
+    text-align: left;
+    min-height: calc(25vh);
+    background-color: #eee;
+  }

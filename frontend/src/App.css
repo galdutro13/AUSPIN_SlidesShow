@@ -4,6 +4,21 @@
   margin-top: 50px;
 }
 
+.app-title {
+  color: var(--brand-dark)
+}
+
+p {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  text-align: left;
+}
+
+
+
 #navigation {
   margin-bottom: 2rem;
 }
@@ -16,7 +31,7 @@
   border: 1px solid #eee;
   padding: 1rem;
   min-height: 300px;
-  min-width: 500px;
+  min-width: 600px;
 }
 
 button {

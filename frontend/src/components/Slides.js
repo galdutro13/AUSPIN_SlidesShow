@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import WebcamVideo from "./webcam";
+import TermsAndConditions from './TermsAndConditions';
+import './Slides.css';
 import axios from 'axios';
 
 function Slides({slides}) {
@@ -7,19 +9,30 @@ function Slides({slides}) {
     const [nome, setNome] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [is_pesquisador, setIsPesquisador] = React.useState(false);
+    const [checked, setChecked] = useState(false);
+
 
     const handlePesquisador = () => {
         setIsPesquisador(!is_pesquisador);
     }
+
+    const handleCheckboxChange = (event) => {
+        setChecked(checked => !checked);
+      };
 
     const handleChange = event => {
         if(event.target.id === "insert_nome")
             setNome(event.target.value);
         else
             setEmail(event.target.value);
-
-        console.log('value is:', event.target.value);
     }
+
+    const handleEmpty = () => {
+        if(nome !== '' && email !== '')
+            return false;
+        else return true;
+    }
+
 
     const handleSubmit = (video_name) => {
         const depoimentoForm = {
@@ -39,23 +52,35 @@ function Slides({slides}) {
     return (
         <div>
             <div id="navigation" className="text-center">
-
-
-                {/*<button
-                    data-testid="button-prev"
-                    disabled={index === 0}
-                    onClick={() => setIndex(index - 1)}
-                    className="small"
-                >
-                    Prev
-                </button>*/}
-
             </div>
             <div id="slide" className="card text-center">
                 <h1 data-testid="title">{slides[index]["title"]}</h1>
+                
                 {slides[index]["text"] && <p
                     data-testid="text">{slides[index]["text"]}
                 </p>}
+                
+                {slides[index]["terms"] && <TermsAndConditions />}
+                {slides[index]["instruction"] && <body>
+                    Algumas dicas:
+                    <br></br>
+                    <br></br>
+                    - Procure olhar diretamente para câmera sem olhar para baixo
+                    <br></br>
+                    - Mantenha a posição entro dos limites do quadro
+                    <br></br>
+                    - Fale pausadamente em voz alta
+                </body>
+                }
+                
+                {slides[index]["checkbox"] && <label>
+                    <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={handleCheckboxChange}
+                        />{slides[index]["checkbox"]}
+                </label>}
+                
                 {slides[index]["nome"] && <input
                     type={"text"}
                     id={"insert_nome"}
@@ -63,6 +88,7 @@ function Slides({slides}) {
                     onChange={handleChange}
                     placeholder={slides[index]["nome"]}
                 />}
+                
                 {slides[index]["email"] && <input
                     type={"text"}
                     id={"insert_email"}
@@ -70,11 +96,13 @@ function Slides({slides}) {
                     onChange={handleChange}
                     placeholder={slides[index]["email"]}
                 />}
+                
                 {slides[index]["subtitle"] && <h3
                     data-testid="subtitle">{slides[index]["subtitle"]}
                 </h3>}
 
                 {slides[index]["camera"] && <WebcamVideo callback={handleSubmit} />}
+                
                 {slides[index]["button"] && <button
                     data-testid="button-next"
                     onClick={() => setIndex(index + 1)}
@@ -83,6 +111,25 @@ function Slides({slides}) {
 
                 > {slides[index]["button"]}
                 </button>}
+
+                {slides[index]["prosseguir"] && <button
+                    data-testid="button-next"
+                    onClick={() => setIndex(index + 1)}
+                    disabled={handleEmpty()}
+                    className="small"
+
+                > {slides[index]["prosseguir"]}
+                </button>}
+
+                {slides[index]["seguinte"] && <button
+                    data-testid="button-next"
+                    onClick={() => setIndex(index + 1)}
+                    disabled={checked === false}
+                    className="small"
+
+                > {slides[index]["seguinte"]}
+                </button>}
+
                 {slides[index]["button1"] && <button
                     data-testid="button-next"
                     onClick={() => {
@@ -96,6 +143,7 @@ function Slides({slides}) {
 
                 > {slides[index]["button1"]}
                 </button>}
+
                 {slides[index]["button2"] && <button
                     data-testid="button-next"
                     onClick={() => {
@@ -110,6 +158,7 @@ function Slides({slides}) {
 
                 > {slides[index]["button2"]}
                 </button>}
+
             </div>
         </div>
     );

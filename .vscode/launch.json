@@ -5,7 +5,7 @@
             "name": "Executar Script: start",
             "request": "launch",
             "command": "npm run start",
-            "cwd": "${workspaceFolder}\\backend"
+            "cwd": "${workspaceFolder}\\frontend"
         }
     ]
 }

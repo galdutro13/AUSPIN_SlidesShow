@@ -23,21 +23,25 @@ const SLIDES = [
         subtitle: "quer continuar e gravar seu depoimento?",
         nome: "NOME COMPLETO",
         email: "ENDEREÇO DE E-MAIL",
-        button1: "Sim",
+        prosseguir: "Sim",
         button2: "Sair"
     },
     {
         title: "TERMO DE AUTORIZAÇÃO DE USO DE IMAGEM",
-        button: "Prosseguir"
+        terms: "true",
+        checkbox: "Aceito",
+        seguinte: "Prosseguir"
     },
     {
         title: "TUTORIAL PARA A GRAVAÇÃO",
         text: "Seja objetivo, você terá 3 minutos.\n" +
             "Haverá uma contagem regressiva antes de gravar",
+        
         instruction: "Algumas dicas:\n" +
             "- Procure olhar diretamente para câmera sem olhar para baixo\n"+
             "- Mantenha a posição entro dos limites do quadro\n"+
-            "- Fale pausadamente em voz auta",
+            "- Fale pausadamente em voz alta",
+        
         subtitle: "quer continuar e gravar seu depoimento?",
         button1: "Sim",
         button2: "Sair"
