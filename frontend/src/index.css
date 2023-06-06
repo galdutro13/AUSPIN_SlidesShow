@@ -45,15 +45,15 @@ body {
   --success-box-shadow: rgba(34, 180, 122, 0.5);
   --success-box-shadow-hover: rgba(34, 180, 122, 0.4);
   --disabled-color: #6EA989;
-  --app-background: linear-gradient(to bottom, #fff 0%, #f3f7f7 100%);
+  --app-background: #fff
   --font-family-sans-serif: 'Open Sans', sans-serif;
   --heading-color: #3a424e;
   --link-color: #5fa6ff;
   --link-color-hover: #447dbd;
   --disabled-text-color: #b7c9cc;
-  --toolbar-background-color: #39424e;
+  --toolbar-background-color: #c2c9cb;
   --toolbar-box-shadow-color: rgba(115, 143, 147, 0.3);
-  --toolbar-border-color: #28313d;
+  --toolbar-border-color: #c7d2d3;
   --card-shadow-color: rgba(99, 118, 129, 0.3);
   --card-hover-shadow-color: rgba(99, 118, 129, 0.5);
   --card-margin-gutter: 0px; }

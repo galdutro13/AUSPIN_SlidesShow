@@ -1,5 +1,5 @@
 .App {
-  max-width: 600px;
+  max-width: 650px;
   margin: 0 auto;
   margin-top: 50px;
 }
@@ -30,8 +30,8 @@ p {
 #slide {
   border: 1px solid #eee;
   padding: 1rem;
-  min-height: 300px;
-  min-width: 600px;
+  min-height: 320px;
+  min-width: 650px;
 }
 
 button {

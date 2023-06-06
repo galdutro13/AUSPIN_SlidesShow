@@ -8,8 +8,7 @@ import {applyPolyfills, defineCustomElements} from 'h8k-components/loader';
 const SLIDES = [
     {
         title: "Olá, esse é AUSPIN Quer Saber",
-        text: "Aqui você pode deixar um depoimento e colaborar\ncom a Inovação na" +
-            "Universidade de São Paulo!",
+        text: "Aqui você pode deixar um depoimento e colaborar\ncom a Inovação na Universidade de São Paulo!",
         quest: "Quer deixar seu depoimento?",
         button: "Prosseguir"
     },
