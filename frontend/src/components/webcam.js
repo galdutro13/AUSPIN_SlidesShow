@@ -117,6 +117,7 @@ export default function WebcamVideo({ callback }) {
                 height={400}
                 width={400}
                 audio={true}
+                muted={true}
                 mirrored={true}
                 ref={webcamRef}
                 videoConstraints={videoConstraints}

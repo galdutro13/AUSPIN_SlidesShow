@@ -7,3 +7,7 @@ body {
     min-height: calc(25vh);
     background-color: #eee;
   }
+
+label {
+  text-align: left;
+}

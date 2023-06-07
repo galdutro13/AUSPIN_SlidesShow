@@ -62,7 +62,7 @@ function Slides({slides}) {
                 </p>}
                 
                 {slides[index]["terms"] && <TermsAndConditions />}
-                {slides[index]["instruction"] && <body>
+                {slides[index]["instruction"] && <p>
                     Algumas dicas:
                     <br></br>
                     <br></br>
@@ -71,7 +71,7 @@ function Slides({slides}) {
                     - Mantenha a posição entro dos limites do quadro
                     <br></br>
                     - Fale pausadamente em voz alta
-                </body>
+                </p>
                 }
                 
                 {slides[index]["checkbox"] && <label>
@@ -86,6 +86,7 @@ function Slides({slides}) {
                     type={"text"}
                     id={"insert_nome"}
                     name={slides[index]["nome"]}
+                    autoComplete='off'
                     onChange={handleChange}
                     placeholder={slides[index]["nome"]}
                 />}
@@ -94,6 +95,7 @@ function Slides({slides}) {
                     type={"text"}
                     id={"insert_email"}
                     name={slides[index]["email"]}
+                    autoComplete='off'
                     onChange={handleChange}
                     placeholder={slides[index]["email"]}
                 />}

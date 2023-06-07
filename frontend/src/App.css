@@ -31,14 +31,16 @@ body{
 }
 
 #slide {
-  border: 1px solid #eee;
+  border: transparent;
   padding: 1rem;
   min-height: 320px;
-  max-height: 400px;
+  max-height: 800px;
   max-width: 650px;
   min-width: 650px;
   position: absolute;
   top: 250px; left: 120px;
+  background-color: transparent;
+  box-shadow: none;
 }
 
 button {

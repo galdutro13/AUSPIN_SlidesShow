@@ -1,5 +1,6 @@
 import React from 'react';
 import './TermsAndConditions.css'; // Import the CSS file
+import TermsTheme from './terms-theme.css';
 
 const TermsAndConditions = () => {
   const [checked, setChecked] = React.useState(false);
@@ -9,8 +10,8 @@ const TermsAndConditions = () => {
   };
 
   return (
-    <div class="terms-container">
-      <body>
+    <div class="terms-container" theme={TermsTheme}>
+      <p>
         Autorizo a utilização das minhas voz e imagem no depoimento que irei gravar 
         nesta interação para que as mesmas possam ser divulgadas nos meios de 
         comunicação da Agência USP de Inovação, o que inclui (mas não se restringe a) redes sociais, 
@@ -27,7 +28,7 @@ const TermsAndConditions = () => {
         <br></br>
         <br></br>
         Li, Estou de Acordo e Autorizo
-      </body>
+      </p>
     </div>
   );
 };
