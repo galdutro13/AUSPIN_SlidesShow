@@ -23,7 +23,7 @@ const SLIDES = [
         nome: "NOME COMPLETO",
         email: "ENDEREÇO DE E-MAIL",
         prosseguir: "Sim",
-        button2: "Sair"
+        sair: "Sair"
     },
     {
         title: "TERMO DE AUTORIZAÇÃO DE USO DE IMAGEM",
@@ -42,8 +42,8 @@ const SLIDES = [
             "- Fale pausadamente em voz alta",
         
         subtitle: "quer continuar e gravar seu depoimento?",
-        button1: "Sim",
-        button2: "Sair"
+        button: "Sim",
+        sair: "Sair"
     },
     {
         title: "RECORD",

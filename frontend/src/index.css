@@ -8,7 +8,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: MyriadPro;
+  font-family: MyriadPRO;
   text-align: left;
 }
 
@@ -1722,7 +1722,6 @@ a.button {
   outline: none;
   padding: 0.28em 1.528em;
   min-height: 44px;
-  display: block;
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -1795,7 +1794,8 @@ a.button {
         height: 16px; }
   button.large,
   a.button.large {
-    min-height: 52px; }
+    min-height: 52px; 
+    display: block;}
     button.large.icon-only,
     a.button.large.icon-only {
       width: 44px;
@@ -1914,6 +1914,7 @@ button {
       box-shadow: none; }
       button.secondary.disabled i, button.secondary:disabled i {
         color: var(--disabled-text-color) !important; }
+    
 
 a {
   color: var(--link-color);

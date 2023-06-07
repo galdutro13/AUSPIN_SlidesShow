@@ -134,6 +134,7 @@ function Slides({slides}) {
                 </button>}
 
                 {slides[index]["button1"] && <button
+                    style={{textAlign: 'left'}}
                     data-testid="button-next"
                     onClick={() => {
                         if(index === 1) {
@@ -142,13 +143,38 @@ function Slides({slides}) {
                         setIndex(index + 1)
                     }}
                     disabled={index === slides.length - 1}
-                    className="small"
+                    className="large"
 
                 > {slides[index]["button1"]}
+                <br/>
+                <p style={{display: 'inline', fontSize: '0.9em'}}>domino competências para resolver</p>
+                <br/>
+                <p style={{display: 'inline', fontSize: '0.9em'}}>problemas de empresas e organizações</p>
                 </button>}
 
-                {slides[index]["button2"] && <button
+                {slides[index]["button2"] &&
+                <button
+                    style={{textAlign: 'left'}}
                     data-testid="button-next"
+                    onClick={() => {
+                        if(index === 1) {
+                            setIndex(index + 1)
+                        } else {
+                            setIndex(0);
+                        }
+                    }}
+                    disabled={index === slides.length - 1}
+                    className="large"
+
+                > {slides[index]["button2"]}
+                <br/>
+                <p style={{display: 'inline', fontSize: '0.9em'}}>busco pesquisadores da USP para</p>
+                <br/>
+                <p style={{display: 'inline', fontSize: '0.9em'}}>contribuir na solução de problemas</p>
+                </button>}
+
+                {slides[index]["sair"] && <button
+                    type="reset"
                     onClick={() => {
                         if(index === 1) {
                             setIndex(index + 1)
@@ -159,7 +185,7 @@ function Slides({slides}) {
                     disabled={index === slides.length - 1}
                     className="small"
 
-                > {slides[index]["button2"]}
+                > {slides[index]["sair"]}
                 </button>}
 
             </div>

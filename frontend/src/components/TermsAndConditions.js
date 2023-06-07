@@ -10,7 +10,7 @@ const TermsAndConditions = () => {
   };
 
   return (
-    <div class="terms-container" theme={TermsTheme}>
+    <div class="terms-container" style={{backgroundColor: '#fff'}}>
       <p>
         Autorizo a utilização das minhas voz e imagem no depoimento que irei gravar 
         nesta interação para que as mesmas possam ser divulgadas nos meios de 
