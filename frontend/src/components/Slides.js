@@ -60,6 +60,19 @@ function Slides({slides}) {
                 {slides[index]["text"] && <p
                     data-testid="text">{slides[index]["text"]}
                 </p>}
+
+                {slides[index]["introducao"] && <p style={{fontSize: "18px"}}
+                    data-testid="introducao">
+                    Se você é pesquisador da USP e suas competências podem resolver problemas das empresas e organizações ou...
+                    <br></br>
+                    Se você é da comunidade externa e busca competências úteis para resolver seus problemas e ajudar nos seus projetos de inovação...
+                    <br></br>
+                    A AUSPIN quer saber e está aqui para juntar pessoas e ideias.
+                </p>}
+
+                {slides[index]["quest"] && <p style={{fontSize: "20px"}}
+                    data-testid="quest">{slides[index]["quest"]}
+                </p>}
                 
                 {slides[index]["terms"] && <TermsAndConditions />}
                 {slides[index]["instruction"] && <p>

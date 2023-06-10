@@ -18,8 +18,8 @@ body {
   --brand-hover: #0095Ad;
   --brand-dark: #FCB415;
   --brand-disabled: #ccf7db;
-  --brand-box-shadow: rgba(252, 180, 15, 0.5);
-  --brand-box-shadow-hover: rgba(252, 180, 15, 0.4);
+  --brand-box-shadow: rgba(0, 149, 173, 0.5);
+  --brand-box-shadow-hover: rgba(0, 149, 173, 0.4);
   --primary-color: #0095Ad;
   --primary-rgb: 252, 180, 15;
   --primary-hover: #20a6bb;
