@@ -64,23 +64,6 @@ export default function WebcamVideo({ callback }) {
         stopTimer();
     }, [mediaRecorderRef, setCapturing]);
 
-    const handleDownload = useCallback(() => {
-        if (recordedChunks.length) {
-            const blob = new Blob(recordedChunks, {
-                type: "video/webm",
-            });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            document.body.appendChild(a);
-            a.style = "display: none";
-            a.href = url;
-            a.download = "react-webcam-stream-capture.webm";
-            a.click();
-            window.URL.revokeObjectURL(url);
-            setRecordedChunks([]);
-        }
-    }, [recordedChunks]);
-
     const handleUpload = useCallback(async () => {
         if (recordedChunks.length) {
             const blob = new Blob(recordedChunks, {
@@ -106,27 +89,24 @@ export default function WebcamVideo({ callback }) {
     }, [recordedChunks]);
 
     const videoConstraints = {
-        width: 420,
-        height: 420,
+        width: 1280,
+        height: 720,
         facingMode: "user",
     };
 
     return (
-        <div className="Container">
+        <div className="Container"
+            style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}>
             <Webcam
-                height={400}
-                width={400}
+                style={{ width: '100%', height: '100%' }}
                 audio={true}
                 muted={true}
                 mirrored={true}
                 ref={webcamRef}
                 videoConstraints={videoConstraints}
             />
-            {capturing ? (
-                <button onClick={handleStopCaptureClick}>Stop Capture</button>
-            ) : (
-                <button onClick={handleStartCaptureClick}>Start Capture</button>
-            )}
+            {capturing ? (onClick={handleStopCaptureClick}) : (onClick={handleStartCaptureClick})}
+            
             {recordedChunks.length > 0 && uploaded == false && (
                 <button onClick={handleUpload}>Enviar</button>
             )}
