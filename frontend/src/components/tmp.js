@@ -12,6 +12,7 @@ export default function WebcamVideo({ callback }) {
   const [recordingTime, setRecordingTime] = useState(0);
   const [textColor, setTextColor] = useState("white");
   const [divRect, setDivRect] = useState(null); // Retângulo que define a posição e tamanho da div
+
   const timerRef = useRef(null);
 
   const startTimer = useCallback(() => {
@@ -93,15 +94,40 @@ export default function WebcamVideo({ callback }) {
       let totalBrightness = 0;
       const totalPixels = width * height * 4; // Cada pixel possui 4 componentes (RGBA)
 
-      for (let i = 0; i < totalPixels; i += 4) {
-        const red = data[i];
-        const green = data[i + 1];
-        const blue = data[i + 2];
+      // Verifica se há um retângulo definido para a div
+      if (divRect) {
+        const { left, top, width: divWidth, height: divHeight } = divRect;
 
-        // Fórmula para calcular o brilho: média dos valores RGB
-        const brightness = (red + green + blue) / 3;
+        const startX = Math.max(0, Math.floor(left));
+        const startY = Math.max(0, Math.floor(top));
+        const endX = Math.min(width, Math.floor(left + divWidth));
+        const endY = Math.min(height, Math.floor(top + divHeight));
 
-        totalBrightness += brightness;
+        for (let y = startY; y < endY; y++) {
+          for (let x = startX; x < endX; x++) {
+            const i = (y * width + x) * 4;
+            const red = data[i];
+            const green = data[i + 1];
+            const blue = data[i + 2];
+
+            // Fórmula para calcular o brilho: média dos valores RGB
+            const brightness = (red + green + blue) / 3;
+
+            totalBrightness += brightness;
+          }
+        }
+      } else {
+        // Se não houver um retângulo definido, calcula o brilho para todos os pixels
+        for (let i = 0; i < totalPixels; i += 4) {
+          const red = data[i];
+          const green = data[i + 1];
+          const blue = data[i + 2];
+
+          // Fórmula para calcular o brilho: média dos valores RGB
+          const brightness = (red + green + blue) / 3;
+
+          totalBrightness += brightness;
+        }
       }
 
       const averageBrightness = totalBrightness / (totalPixels / 4); // Divide por 4 para obter a média
@@ -142,12 +168,19 @@ export default function WebcamVideo({ callback }) {
     facingMode: "user",
   };
 
+  const handleDivRef = useCallback((ref) => {
+    if (ref) {
+      const rect = ref.getBoundingClientRect();
+      setDivRect(rect);
+    }
+  }, []);
+
   return (
     <div
       className="Container"
       style={{
         position:
-          recordedChunks.length > 0 && capturing == false ? "static" : "fixed",
+          recordedChunks.length > 0 && capturing === false ? "static" : "fixed",
         top: 0,
         left: 0,
         right: 0,
@@ -157,9 +190,9 @@ export default function WebcamVideo({ callback }) {
       <Webcam
         style={{
           width:
-            recordedChunks.length > 0 && capturing == false ? "75%" : "100%",
+            recordedChunks.length > 0 && capturing === false ? "75%" : "100%",
           height:
-            recordedChunks.length > 0 && capturing == false ? "75%" : "100%",
+            recordedChunks.length > 0 && capturing === false ? "75%" : "100%",
         }}
         audio={true}
         muted={true}
@@ -171,17 +204,24 @@ export default function WebcamVideo({ callback }) {
       />
 
       {capturing && (
-        <p
-          style={{ position: "absolute", top: 10, left: 10, color: textColor }}
-        >
-          Tempo restante: {(180000 - recordingTime) / 1000} seconds
-        </p>
+        <div ref={handleDivRef}>
+          <p
+            style={{
+              position: "absolute",
+              top: 10,
+              left: 10,
+              color: textColor,
+            }}
+          >
+            Tempo restante: {(180000 - recordingTime) / 1000} seconds
+          </p>
+        </div>
       )}
 
-      {recordedChunks.length > 0 && uploaded == false && (
+      {recordedChunks.length > 0 && uploaded === false && (
         <button onClick={handleUpload}>Enviar</button>
       )}
-      {recordedChunks.length > 0 && uploaded == true && (
+      {recordedChunks.length > 0 && uploaded === true && (
         <button onClick={() => callback(filename)}>finalizar</button>
       )}
       <p>Tempo restante: {(180000 - recordingTime) / 1000} seconds</p>
