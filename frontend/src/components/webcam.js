@@ -13,6 +13,7 @@ export default function WebcamVideo({ callback }) {
   const [textColor, setTextColor] = useState("white");
   const [divRect, setDivRect] = useState(null); // Retângulo que define a posição e tamanho da div
   const timerRef = useRef(null);
+  const intervalID = useRef(null);
 
   const startTimer = useCallback(() => {
     let timer = 0;
@@ -34,7 +35,7 @@ export default function WebcamVideo({ callback }) {
   }, [capturing, startTimer]);
 
   const adjustTextColor = (brightness) => {
-    if (brightness > 200) {
+    if (brightness > 125) {
       setTextColor("black"); // Altera para cor preta se o brilho for alto
     } else {
       setTextColor("white"); // Mantém a cor branca se o brilho for baixo
@@ -60,10 +61,28 @@ export default function WebcamVideo({ callback }) {
       handleDataAvailable
     );
     mediaRecorderRef.current.start();
+
+    let frameCount = 0;
+    // Define uma função para chamar a onUserMedia a cada x frames
+    function animate() {
+      // Incrementa o contador de frames
+      frameCount++;
+      // Se o contador for igual a x, chama a onUserMedia e zera o contador
+      if (frameCount === 5) {
+        onUserMedia(webcamRef.current.stream);
+        frameCount = 0;
+      }
+    }
+    // Inicia a animação
+    intervalID.current = setInterval(() => {
+      window.requestAnimationFrame(animate);
+    }, 500);
+
     setTimeout(() => {
       mediaRecorderRef.current.stop();
       setCapturing(false);
       stopTimer();
+      clearInterval(intervalID.current);
     }, 180000);
   }, [webcamRef, setCapturing, mediaRecorderRef, handleDataAvailable]);
 
@@ -71,6 +90,7 @@ export default function WebcamVideo({ callback }) {
     mediaRecorderRef.current.stop();
     setCapturing(false);
     stopTimer();
+    clearInterval(intervalID.current);
   }, [mediaRecorderRef, setCapturing]);
 
   const onUserMedia = async (stream) => {
@@ -80,7 +100,13 @@ export default function WebcamVideo({ callback }) {
 
     const calculateBrightness = async () => {
       const imageBitmap = await imageCapture.grabFrame();
-      const data = await imageBitmap.data;
+      const canvas = document.createElement("canvas");
+      canvas.width = imageBitmap.width;
+      canvas.height = imageBitmap.height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(imageBitmap, 0, 0);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
       const brightness = calculateImageBrightness(
         data,
         trackSettings.width,
@@ -93,15 +119,40 @@ export default function WebcamVideo({ callback }) {
       let totalBrightness = 0;
       const totalPixels = width * height * 4; // Cada pixel possui 4 componentes (RGBA)
 
-      for (let i = 0; i < totalPixels; i += 4) {
-        const red = data[i];
-        const green = data[i + 1];
-        const blue = data[i + 2];
+      // Verifica se há um retângulo definido para a div
+      if (divRect) {
+        const { left, top, width: divWidth, height: divHeight } = divRect;
 
-        // Fórmula para calcular o brilho: média dos valores RGB
-        const brightness = (red + green + blue) / 3;
+        const startX = Math.max(0, Math.floor(left));
+        const startY = Math.max(0, Math.floor(top));
+        const endX = Math.min(width, Math.floor(left + divWidth));
+        const endY = Math.min(height, Math.floor(top + divHeight));
 
-        totalBrightness += brightness;
+        for (let y = startY; y < endY; y++) {
+          for (let x = startX; x < endX; x++) {
+            const i = (y * width + x) * 4;
+            const red = data[i];
+            const green = data[i + 1];
+            const blue = data[i + 2];
+
+            // Fórmula para calcular o brilho: média dos valores RGB
+            const brightness = (red + green + blue) / 3;
+
+            totalBrightness += brightness;
+          }
+        }
+      } else {
+        // Se não houver um retângulo definido, calcula o brilho para todos os pixels
+        for (let i = 0; i < totalPixels; i += 4) {
+          const red = data[i];
+          const green = data[i + 1];
+          const blue = data[i + 2];
+
+          // Fórmula para calcular o brilho: média dos valores RGB
+          const brightness = (red + green + blue) / 3;
+
+          totalBrightness += brightness;
+        }
       }
 
       const averageBrightness = totalBrightness / (totalPixels / 4); // Divide por 4 para obter a média
@@ -142,6 +193,13 @@ export default function WebcamVideo({ callback }) {
     facingMode: "user",
   };
 
+  const handleDivRef = useCallback((ref) => {
+    if (ref) {
+      const rect = ref.getBoundingClientRect();
+      setDivRect(rect);
+    }
+  }, []);
+
   return (
     <div
       className="Container"
@@ -167,15 +225,22 @@ export default function WebcamVideo({ callback }) {
         ref={webcamRef}
         videoConstraints={videoConstraints}
         onClick={capturing ? handleStopCaptureClick : handleStartCaptureClick}
-        onUserMedia={onUserMedia}
       />
 
       {capturing && (
-        <p
-          style={{ position: "absolute", top: 10, left: 10, color: textColor }}
-        >
-          Tempo restante: {(180000 - recordingTime) / 1000} seconds
-        </p>
+        <div>
+          <p
+            style={{
+              position: "absolute",
+              top: 10,
+              left: 10,
+              color: textColor,
+            }}
+            ref={handleDivRef}
+          >
+            Tempo restante: {(180000 - recordingTime) / 1000} segundos
+          </p>
+        </div>
       )}
 
       {recordedChunks.length > 0 && uploaded == false && (
@@ -184,7 +249,7 @@ export default function WebcamVideo({ callback }) {
       {recordedChunks.length > 0 && uploaded == true && (
         <button onClick={() => callback(filename)}>finalizar</button>
       )}
-      <p>Tempo restante: {(180000 - recordingTime) / 1000} seconds</p>
+      <p>Tempo total gravado: {recordingTime / 1000} segundos</p>
     </div>
   );
 }
