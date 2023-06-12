@@ -272,8 +272,8 @@ export default function WebcamVideo({ callback }) {
           <p
             style={{
               position: "absolute",
-              top: 10,
-              left: 10,
+              top: "10px",
+              right: "150px",
               color: textColor,
             }}
             ref={handleDivRef}
@@ -284,8 +284,8 @@ export default function WebcamVideo({ callback }) {
           <p
             style={{
               position: "absolute",
-              top: 10,
-              left: 120,
+              top: "10px",
+              right: "120px",
               color: "red",
             }}
           >
@@ -294,8 +294,8 @@ export default function WebcamVideo({ callback }) {
           <p
             style={{
               position: "absolute",
-              top: 10,
-              left: 150,
+              top: "10px",
+              right: "50px",
               color: textColor,
             }}
           >
@@ -319,15 +319,16 @@ export default function WebcamVideo({ callback }) {
               setShowVideoPlayer(false);
               setVideoURL("");
               setVideoRef(null);
-              handleStartCaptureClick;
             }}
           >
             Gravar novamente
           </button>
         )}
 
-        {recordedChunks.length > 0 && uploaded === false && (
-          <button onClick={handlePlayVideo}>Reproduzir</button>
+        {recordedChunks.length > 0 && uploaded == false && (
+          <button style={{ marginLeft: "210px" }} onClick={() => callback("1")}>
+            sair
+          </button>
         )}
       </div>
 

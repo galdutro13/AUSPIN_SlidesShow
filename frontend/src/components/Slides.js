@@ -30,6 +30,11 @@ function Slides({ slides }) {
   };
 
   const handleSubmit = (video_name) => {
+    if (video_name === "1") {
+      setIndex(index + 1);
+      return;
+    }
+
     const depoimentoForm = {
       usuario_id: email,
       usuario_nome: nome,
@@ -51,11 +56,13 @@ function Slides({ slides }) {
         <h1 data-testid="title">{slides[index]["title"]}</h1>
 
         {slides[index]["text"] && (
-          <p data-testid="text">{slides[index]["text"]}</p>
+          <p style={{ fontSize: "20px" }} data-testid="text">
+            {slides[index]["text"]}
+          </p>
         )}
 
         {slides[index]["introducao"] && (
-          <p style={{ fontSize: "18px" }} data-testid="introducao">
+          <p style={{ fontSize: "20px" }} data-testid="introducao">
             Se você é pesquisador da USP e suas competências podem resolver
             problemas das empresas e organizações ou...
             <br></br>
@@ -67,14 +74,17 @@ function Slides({ slides }) {
         )}
 
         {slides[index]["quest"] && (
-          <p style={{ fontSize: "20px" }} data-testid="quest">
+          <p
+            style={{ fontSize: "24px", fontWeight: "bold" }}
+            data-testid="quest"
+          >
             {slides[index]["quest"]}
           </p>
         )}
 
         {slides[index]["terms"] && <TermsAndConditions />}
         {slides[index]["instruction"] && (
-          <p>
+          <p style={{ fontSize: "18px" }}>
             Algumas dicas:
             <br></br>
             <br></br>- Procure olhar diretamente para câmera sem olhar para
@@ -118,7 +128,9 @@ function Slides({ slides }) {
         )}
 
         {slides[index]["subtitle"] && (
-          <h3 data-testid="subtitle">{slides[index]["subtitle"]}</h3>
+          <h3 data-testid="subtitle" style={{ marginBlockEnd: "15px" }}>
+            {slides[index]["subtitle"]}
+          </h3>
         )}
 
         {slides[index]["camera"] && <WebcamVideo callback={handleSubmit} />}
@@ -175,11 +187,23 @@ function Slides({ slides }) {
             {" "}
             {slides[index]["button1"]}
             <br />
-            <p style={{ display: "inline", fontSize: "0.9em" }}>
+            <p
+              style={{
+                display: "inline",
+                fontSize: "0.9em",
+                fontWeight: "lighter",
+              }}
+            >
               domino competências para resolver
             </p>
             <br />
-            <p style={{ display: "inline", fontSize: "0.9em" }}>
+            <p
+              style={{
+                display: "inline",
+                fontSize: "0.9em",
+                fontWeight: "lighter",
+              }}
+            >
               problemas de empresas e organizações
             </p>
           </button>
@@ -202,11 +226,23 @@ function Slides({ slides }) {
             {" "}
             {slides[index]["button2"]}
             <br />
-            <p style={{ display: "inline", fontSize: "0.9em" }}>
+            <p
+              style={{
+                display: "inline",
+                fontSize: "0.9em",
+                fontWeight: "lighter",
+              }}
+            >
               busco pesquisadores da USP para
             </p>
             <br />
-            <p style={{ display: "inline", fontSize: "0.9em" }}>
+            <p
+              style={{
+                display: "inline",
+                fontSize: "0.9em",
+                fontWeight: "lighter",
+              }}
+            >
               contribuir na solução de problemas
             </p>
           </button>
@@ -214,6 +250,7 @@ function Slides({ slides }) {
 
         {slides[index]["sair"] && (
           <button
+            style={{ marginLeft: "340px" }}
             type="reset"
             onClick={() => {
               if (index === 1) {
