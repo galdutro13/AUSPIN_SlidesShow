@@ -137,6 +137,7 @@ function Slides({ slides }) {
 
         {slides[index]["button"] && (
           <button
+            style={{ color: "black", fontSize: "14px", letterSpacing: "1px" }}
             data-testid="button-next"
             onClick={() => setIndex(index + 1)}
             disabled={index === slides.length - 1}
@@ -149,6 +150,7 @@ function Slides({ slides }) {
 
         {slides[index]["prosseguir"] && (
           <button
+            style={{ color: "black", fontSize: "14px", letterSpacing: "1px" }}
             data-testid="button-next"
             onClick={() => setIndex(index + 1)}
             disabled={handleEmpty()}
@@ -161,6 +163,7 @@ function Slides({ slides }) {
 
         {slides[index]["seguinte"] && (
           <button
+            style={{ color: "black", fontSize: "14px", letterSpacing: "1px" }}
             data-testid="button-next"
             onClick={() => setIndex(index + 1)}
             disabled={checked === false}
@@ -250,7 +253,14 @@ function Slides({ slides }) {
 
         {slides[index]["sair"] && (
           <button
-            style={{ marginLeft: "340px" }}
+            style={{
+              marginLeft: "340px",
+              background: "#fcb415",
+              boxShadow: " 0 4px 12px rgba(	252, 180, 21, 0.5)",
+              color: "black",
+              fontSize: "14px",
+              letterSpacing: "1px",
+            }}
             type="reset"
             onClick={() => {
               if (index === 1) {

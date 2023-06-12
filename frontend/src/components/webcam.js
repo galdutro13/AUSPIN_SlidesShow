@@ -306,14 +306,25 @@ export default function WebcamVideo({ callback }) {
 
       <div style={{ display: "block" }}>
         {recordedChunks.length > 0 && uploaded == false && (
-          <button onClick={handleUpload}>Enviar</button>
+          <button
+            style={{ color: "black", fontSize: "14px", letterSpacing: "1px" }}
+            onClick={handleUpload}
+          >
+            Enviar
+          </button>
         )}
         {recordedChunks.length > 0 && uploaded == true && (
-          <button onClick={() => callback(filename)}>finalizar</button>
+          <button
+            style={{ color: "black", fontSize: "14px", letterSpacing: "1px" }}
+            onClick={() => callback(filename)}
+          >
+            finalizar
+          </button>
         )}
 
         {recordedChunks.length > 0 && uploaded == false && (
           <button
+            style={{ color: "black", fontSize: "14px", letterSpacing: "1px" }}
             onClick={() => {
               setRecordedChunks([]);
               setShowVideoPlayer(false);
@@ -326,7 +337,17 @@ export default function WebcamVideo({ callback }) {
         )}
 
         {recordedChunks.length > 0 && uploaded == false && (
-          <button style={{ marginLeft: "210px" }} onClick={() => callback("1")}>
+          <button
+            style={{
+              marginLeft: "210px",
+              background: "#fcb415",
+              boxShadow: " 0 4px 12px rgba(	252, 180, 21, 0.5)",
+              color: "black",
+              fontSize: "14px",
+              letterSpacing: "1px",
+            }}
+            onClick={() => callback("1")}
+          >
             sair
           </button>
         )}
