@@ -284,7 +284,7 @@ export default function WebcamVideo({ callback }) {
                   transform: "translate(-50%, -50%)",
                   fontSize: "50px",
                   fontWeight: "bolder",
-                  color: textColor,
+                  color: "white",
                 }}
               >
                 {cTimer / 1000}
