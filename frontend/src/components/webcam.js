@@ -1,6 +1,7 @@
 import React, { useCallback, useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import axios from "axios";
+import mywebcam from "./webcam.css";
 
 export default function WebcamVideo({ callback }) {
   const webcamRef = useRef(null);
@@ -12,6 +13,9 @@ export default function WebcamVideo({ callback }) {
   const [recordingTime, setRecordingTime] = useState(0);
   const [textColor, setTextColor] = useState("white");
   const [divRect, setDivRect] = useState(null); // Retângulo que define a posição e tamanho da div
+  const [showVideoPlayer, setShowVideoPlayer] = useState(false);
+  const [videoRef, setVideoRef] = useState(null); // Referência para o elemento de vídeo
+  const [videoURL, setVideoURL] = useState(""); // URL do vídeo gravadp
   const timerRef = useRef(null);
   const intervalID = useRef(null);
 
@@ -83,6 +87,7 @@ export default function WebcamVideo({ callback }) {
       setCapturing(false);
       stopTimer();
       clearInterval(intervalID.current);
+      setShowVideoPlayer(true);
     }, 180000);
   }, [webcamRef, setCapturing, mediaRecorderRef, handleDataAvailable]);
 
@@ -91,6 +96,7 @@ export default function WebcamVideo({ callback }) {
     setCapturing(false);
     stopTimer();
     clearInterval(intervalID.current);
+    setShowVideoPlayer(true);
   }, [mediaRecorderRef, setCapturing]);
 
   const onUserMedia = async (stream) => {
@@ -200,6 +206,13 @@ export default function WebcamVideo({ callback }) {
     }
   }, []);
 
+  const handlePlayVideo = useCallback(() => {
+    const recordedBlob = new Blob(recordedChunks, { type: "video/webm" });
+    const videoURL = URL.createObjectURL(recordedBlob);
+    setVideoRef(recordedBlob);
+    setVideoURL(videoURL);
+  }, [recordedChunks]);
+
   return (
     <div
       className="Container"
@@ -212,23 +225,50 @@ export default function WebcamVideo({ callback }) {
         bottom: 0,
       }}
     >
-      <Webcam
-        style={{
-          width:
-            recordedChunks.length > 0 && capturing == false ? "75%" : "100%",
-          height:
-            recordedChunks.length > 0 && capturing == false ? "75%" : "100%",
-        }}
-        audio={true}
-        muted={true}
-        mirrored={true}
-        ref={webcamRef}
-        videoConstraints={videoConstraints}
-        onClick={capturing ? handleStopCaptureClick : handleStartCaptureClick}
-      />
+      {showVideoPlayer == false && (
+        <Webcam
+          style={{
+            width: "100%",
+            height: "100%",
+          }}
+          audio={true}
+          muted={true}
+          mirrored={true}
+          ref={webcamRef}
+          videoConstraints={videoConstraints}
+          onClick={capturing ? handleStopCaptureClick : handleStartCaptureClick}
+        />
+      )}
+
+      {showVideoPlayer == true && (
+        <div
+          className="VideoPlayer"
+          style={{
+            position: "static",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+          }}
+        >
+          <video
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+            controls
+            autoPlay
+            src={videoURL}
+            ref={videoRef}
+          />
+          {!videoURL && (
+            <div className="triangle-right" onClick={handlePlayVideo}></div>
+          )}
+        </div>
+      )}
 
       {capturing && (
-        <div>
+        <div style={{ display: "flex", flexDirection: "row" }}>
           <p
             style={{
               position: "absolute",
@@ -238,17 +278,59 @@ export default function WebcamVideo({ callback }) {
             }}
             ref={handleDivRef}
           >
-            Tempo restante: {(180000 - recordingTime) / 1000} segundos
+            Tempo restante:
+          </p>
+
+          <p
+            style={{
+              position: "absolute",
+              top: 10,
+              left: 120,
+              color: "red",
+            }}
+          >
+            {(180000 - recordingTime) / 1000}
+          </p>
+          <p
+            style={{
+              position: "absolute",
+              top: 10,
+              left: 150,
+              color: textColor,
+            }}
+          >
+            segundos
           </p>
         </div>
       )}
 
-      {recordedChunks.length > 0 && uploaded == false && (
-        <button onClick={handleUpload}>Enviar</button>
-      )}
-      {recordedChunks.length > 0 && uploaded == true && (
-        <button onClick={() => callback(filename)}>finalizar</button>
-      )}
+      <div style={{ display: "block" }}>
+        {recordedChunks.length > 0 && uploaded == false && (
+          <button onClick={handleUpload}>Enviar</button>
+        )}
+        {recordedChunks.length > 0 && uploaded == true && (
+          <button onClick={() => callback(filename)}>finalizar</button>
+        )}
+
+        {recordedChunks.length > 0 && uploaded == false && (
+          <button
+            onClick={() => {
+              setRecordedChunks([]);
+              setShowVideoPlayer(false);
+              setVideoURL("");
+              setVideoRef(null);
+              handleStartCaptureClick;
+            }}
+          >
+            Gravar novamente
+          </button>
+        )}
+
+        {recordedChunks.length > 0 && uploaded === false && (
+          <button onClick={handlePlayVideo}>Reproduzir</button>
+        )}
+      </div>
+
       <p>Tempo total gravado: {recordingTime / 1000} segundos</p>
     </div>
   );
