@@ -260,7 +260,7 @@ export default function WebcamVideo({ callback }) {
           {!capturing && !inTimer && (
             <div
               className="circle"
-              style={{ background: "while" }}
+              style={{ background: "white" }}
               onClick={() => {
                 captureTimer();
               }}
@@ -275,6 +275,20 @@ export default function WebcamVideo({ callback }) {
           )}
 
           {!capturing && inTimer && (
+            <div
+              className="circle"
+              style={{
+                position: "absolute",
+                top: "56%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                opacity: "25%",
+                background: "#e4dfda",
+              }}
+            ></div>
+          )}
+
+          {!capturing && inTimer && (
             <div className="timer">
               <p
                 style={{
@@ -285,6 +299,7 @@ export default function WebcamVideo({ callback }) {
                   fontSize: "50px",
                   fontWeight: "bolder",
                   color: "white",
+                  opacity: "100%",
                 }}
               >
                 {cTimer / 1000}
