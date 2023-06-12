@@ -11,3 +11,16 @@
   border-bottom: 25px solid white;
   cursor: pointer;
 }
+
+.circle {
+  position: absolute;
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  box-shadow: 4px, 6px, 10px, 0 rgba(0, 0, 0, 0.4);
+}

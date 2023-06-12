@@ -11,6 +11,8 @@ export default function WebcamVideo({ callback }) {
   const [filename, setFilename] = useState("");
   const [uploaded, setUploaded] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
+  const [cTimer, setCTimer] = useState(5000);
+  const [inTimer, setInTimer] = useState(false);
   const [textColor, setTextColor] = useState("white");
   const [divRect, setDivRect] = useState(null); // Retângulo que define a posição e tamanho da div
   const [showVideoPlayer, setShowVideoPlayer] = useState(false);
@@ -18,6 +20,23 @@ export default function WebcamVideo({ callback }) {
   const [videoURL, setVideoURL] = useState(""); // URL do vídeo gravadp
   const timerRef = useRef(null);
   const intervalID = useRef(null);
+  const capTimer = useRef(null);
+
+  const captureTimer = useCallback(() => {
+    setInTimer(true);
+    let timer = 5000;
+    capTimer.current = setInterval(() => {
+      onUserMedia(webcamRef.current.stream);
+      timer -= 1000;
+      setCTimer(timer);
+      if (timer < 0) {
+        setInTimer(false);
+        handleStartCaptureClick();
+        setCTimer(5000);
+        clearInterval(capTimer.current);
+      }
+    }, 1000);
+  }, []);
 
   const startTimer = useCallback(() => {
     let timer = 0;
@@ -226,18 +245,53 @@ export default function WebcamVideo({ callback }) {
       }}
     >
       {showVideoPlayer == false && (
-        <Webcam
-          style={{
-            width: "100%",
-            height: "100%",
-          }}
-          audio={true}
-          muted={true}
-          mirrored={true}
-          ref={webcamRef}
-          videoConstraints={videoConstraints}
-          onClick={capturing ? handleStopCaptureClick : handleStartCaptureClick}
-        />
+        <div className="Webcam">
+          <Webcam
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+            audio={true}
+            muted={true}
+            mirrored={true}
+            ref={webcamRef}
+            videoConstraints={videoConstraints}
+          />
+          {!capturing && !inTimer && (
+            <div
+              className="circle"
+              style={{ background: "while" }}
+              onClick={() => {
+                captureTimer();
+              }}
+            ></div>
+          )}
+          {capturing && (
+            <div
+              className="circle"
+              style={{ background: "red" }}
+              onClick={handleStopCaptureClick}
+            ></div>
+          )}
+
+          {!capturing && inTimer && (
+            <div className="timer">
+              <p
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  fontSize: "50px",
+                  fontWeight: "bolder",
+                  color: textColor,
+                }}
+              >
+                {cTimer / 1000}
+              </p>
+            </div>
+          )}
+        </div>
       )}
 
       {showVideoPlayer == true && (
