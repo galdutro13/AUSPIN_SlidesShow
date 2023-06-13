@@ -373,10 +373,12 @@ export default function WebcamVideo({ callback }) {
         <div style={{ display: "flex", flexDirection: "row" }}>
           <p
             style={{
+              fontSize: "24px",
               position: "absolute",
               top: "10px",
               right: "150px",
               color: textColor,
+              textShadow: "0px 0px 10px rgba(0, 0, 0, 0.28)",
             }}
             ref={handleDivRef}
           >
@@ -385,23 +387,17 @@ export default function WebcamVideo({ callback }) {
 
           <p
             style={{
+              fontSize: "24px",
               position: "absolute",
               top: "10px",
-              right: "120px",
+              right: "95px",
               color: "red",
+              textShadow: "0px 0px 10px rgba(0, 0, 0, 0.28)",
             }}
           >
-            {(180000 - recordingTime) / 1000}
-          </p>
-          <p
-            style={{
-              position: "absolute",
-              top: "10px",
-              right: "50px",
-              color: textColor,
-            }}
-          >
-            segundos
+            {Math.floor((recordingTime / (1000 * 60)) % 60)}:
+            {Math.floor((recordingTime / 1000) % 60) < 10 ? "0" : ""}
+            {Math.floor((recordingTime / 1000) % 60)}
           </p>
         </div>
       )}
