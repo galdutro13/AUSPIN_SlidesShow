@@ -2,6 +2,7 @@ import React, { useCallback, useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import axios from "axios";
 import mywebcam from "./webcam.css";
+import rPlayIcon from "./icons/replay.webp";
 
 export default function WebcamVideo({ callback }) {
   const webcamRef = useRef(null);
@@ -18,6 +19,7 @@ export default function WebcamVideo({ callback }) {
   const [showVideoPlayer, setShowVideoPlayer] = useState(false);
   const [videoRef, setVideoRef] = useState(null); // Referência para o elemento de vídeo
   const [videoURL, setVideoURL] = useState(""); // URL do vídeo gravadp
+  const [videoEnded, setVideoEnded] = useState(false); // Flag para indicar se o vídeo terminou
   const timerRef = useRef(null);
   const intervalID = useRef(null);
   const capTimer = useRef(null);
@@ -281,6 +283,8 @@ export default function WebcamVideo({ callback }) {
                 position: "absolute",
                 top: "56%",
                 left: "50%",
+                width: "150px",
+                height: "150px",
                 transform: "translate(-50%, -50%)",
                 opacity: "25%",
                 background: "#e4dfda",
@@ -293,10 +297,10 @@ export default function WebcamVideo({ callback }) {
               <p
                 style={{
                   position: "absolute",
-                  top: "50%",
+                  top: "44%",
                   left: "50%",
                   transform: "translate(-50%, -50%)",
-                  fontSize: "50px",
+                  fontSize: "100px",
                   fontWeight: "bolder",
                   color: "white",
                   opacity: "100%",
@@ -329,9 +333,38 @@ export default function WebcamVideo({ callback }) {
             autoPlay
             src={videoURL}
             ref={videoRef}
+            onEnded={() => {
+              setVideoEnded(true);
+            }}
           />
           {!videoURL && (
             <div className="triangle-right" onClick={handlePlayVideo}></div>
+          )}
+          {videoEnded && (
+            <div
+              className="replay-icon"
+              onClick={() => {
+                setVideoEnded(false);
+                handlePlayVideo();
+              }}
+            >
+              <img
+                style={{
+                  width: "80px",
+                  height: "80px",
+                  position: "absolute",
+                  top: "40%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  filter:
+                    "invert(97%) sepia(0%) saturate(6230%) hue-rotate(309deg) brightness(109%) contrast(102%)",
+                  boxShadow: "4px, 6px, 10px, 0 rgba(0, 0, 0, 0.4)",
+                  cursor: "pointer",
+                }}
+                src={rPlayIcon}
+                alt="replay"
+              />
+            </div>
           )}
         </div>
       )}
