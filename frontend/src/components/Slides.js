@@ -269,11 +269,7 @@ function Slides({ slides }) {
             }}
             type="reset"
             onClick={() => {
-              if (index === 1) {
-                setIndex(index + 1);
-              } else {
-                setIndex(0);
-              }
+              window.location.reload();
             }}
             disabled={index === slides.length - 1}
             className="small"
