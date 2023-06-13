@@ -450,8 +450,6 @@ export default function WebcamVideo({ callback }) {
           </button>
         )}
       </div>
-
-      <p>Tempo total gravado: {recordingTime / 1000} segundos</p>
     </div>
   );
 }
