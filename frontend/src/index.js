@@ -57,6 +57,7 @@ const SLIDES = [
   {
     title: "Muito Obrigado",
     subtitle: "A AUSPIN agradece sua colaboração",
+    reload: "true",
   },
 ];
 

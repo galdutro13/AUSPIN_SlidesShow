@@ -11,6 +11,12 @@ function Slides({ slides }) {
   const [is_pesquisador, setIsPesquisador] = React.useState(false);
   const [checked, setChecked] = useState(false);
 
+  const pageReloader = () => {
+    setTimeout(function () {
+      window.location.reload();
+    }, 5000);
+  };
+
   const handlePesquisador = () => {
     setIsPesquisador(!is_pesquisador);
   };
@@ -31,7 +37,7 @@ function Slides({ slides }) {
 
   const handleSubmit = (video_name) => {
     if (video_name === "1") {
-      setIndex(index + 1);
+      window.location.reload();
       return;
     }
 
@@ -276,6 +282,8 @@ function Slides({ slides }) {
             {slides[index]["sair"]}
           </button>
         )}
+
+        {slides[index]["reload"] && pageReloader}
       </div>
     </div>
   );
