@@ -5,10 +5,10 @@ async function main() {
         mongoose.set("strictQuery", true);
 
         await mongoose.connect(
-            "mongodb+srv://gregassagraf:l1DuF09jGiCg26jM@cluster0.bwaedeh.mongodb.net/?retryWrites=true&w=majority"
+            "mongodb://127.0.0.1:27017/depoimentosDB?retryWrites=true&w=majority"
         );
         
-        console.log("Conectado ao MongoDB Atlas");
+        console.log("Conectado ao MongoDB!");
     }
 
     catch (error) {
@@ -17,3 +17,5 @@ async function main() {
 }
 
 module.exports = main;
+
+// mongodb+srv://gregassagraf:l1DuF09jGiCg26jM@cluster0.bwaedeh.mongodb.net/?retryWrites=true&w=majority

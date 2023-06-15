@@ -279,7 +279,7 @@ function Slides({ slides }) {
           </button>
         )}
 
-        {slides[index]["reload"] && pageReloader}
+        {slides[index]["reload"] && pageReloader()}
       </div>
     </div>
   );

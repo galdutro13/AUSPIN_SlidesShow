@@ -22,7 +22,7 @@ const depoimentoSchema = new Schema({
         type: String,
         required: true
     },
-}, {timestamps: true});
+}, {timestamps: true, collection: 'depoimentos'});
 
 const Depoimento = mongoose.model('Depoimento', depoimentoSchema);
 
