@@ -17,5 +17,3 @@ async function main() {
 }
 
 module.exports = main;
-
-// mongodb+srv://gregassagraf:l1DuF09jGiCg26jM@cluster0.bwaedeh.mongodb.net/?retryWrites=true&w=majority
