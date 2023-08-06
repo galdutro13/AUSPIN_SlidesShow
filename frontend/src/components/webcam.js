@@ -2,6 +2,7 @@ import React, { useCallback, useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import axios from "axios";
 import mywebcam from "./webcam.css";
+import AlertDialog from "./Alertdialog";
 import rPlayIcon from "./icons/replay.webp";
 
 export default function WebcamVideo({ callback }) {
@@ -20,6 +21,7 @@ export default function WebcamVideo({ callback }) {
   const [videoRef, setVideoRef] = useState(null); // Referência para o elemento de vídeo
   const [videoURL, setVideoURL] = useState(""); // URL do vídeo gravadp
   const [videoEnded, setVideoEnded] = useState(false); // Flag para indicar se o vídeo terminou
+  const [openDialog, setOpenDialog] = useState(false); // Flag para indicar se o diálogo está aberto
   const timerRef = useRef(null);
   const intervalID = useRef(null);
   const capTimer = useRef(null);
@@ -48,6 +50,12 @@ export default function WebcamVideo({ callback }) {
     }, 1000);
   }, []);
 
+  const handleEsc = useCallback((event) => {
+    if (event.keyCode === 27) {
+      setOpenDialog(true);
+    }
+  }, []);
+
   const stopTimer = useCallback(() => {
     clearInterval(timerRef.current);
     timerRef.current = null;
@@ -59,11 +67,26 @@ export default function WebcamVideo({ callback }) {
     }
   }, [capturing, startTimer]);
 
+  useEffect(() => {
+    window.addEventListener("keydown", handleEsc);
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [handleEsc]);
+
   const adjustTextColor = (brightness) => {
     if (brightness > 125) {
       setTextColor("black"); // Altera para cor preta se o brilho for alto
     } else {
       setTextColor("white"); // Mantém a cor branca se o brilho for baixo
+    }
+  };
+
+  const handleClose = (retcode) => {
+    if(retcode == "0") {
+      setOpenDialog(false);
+    } else if(retcode == "1") {
+      window.location.reload();
     }
   };
 
@@ -115,6 +138,7 @@ export default function WebcamVideo({ callback }) {
   const handleStopCaptureClick = useCallback(() => {
     mediaRecorderRef.current.stop();
     setCapturing(false);
+    setOpenDialog(false);
     stopTimer();
     clearInterval(intervalID.current);
     setShowVideoPlayer(true);
@@ -246,6 +270,11 @@ export default function WebcamVideo({ callback }) {
         bottom: 0,
       }}
     >
+    {capturing && (
+        <div>
+          <AlertDialog open={openDialog} onClose={handleClose} />
+        </div>
+      )}
       {showVideoPlayer == false && (
         <div className="Webcam">
           <Webcam
