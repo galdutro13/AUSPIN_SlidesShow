@@ -35,12 +35,16 @@ export default function WebcamVideo({ callback }) {
       setCTimer(timer);
       if (timer < 0) {
         setInTimer(false);
-        handleStartCaptureClick();
+        if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'paused'){
+          handleResumeCaptureClick();
+        }else {
+          handleStartCaptureClick();
+        }
         setCTimer(5000);
         clearInterval(capTimer.current);
       }
     }, 1000);
-  }, []);
+  }, [mediaRecorderRef]);
 
   const startTimer = useCallback(() => {
     let timer = 0;
@@ -52,7 +56,14 @@ export default function WebcamVideo({ callback }) {
 
   const handleEsc = useCallback((event) => {
     if (event.keyCode === 27) {
+      setCapturing(false);
       setOpenDialog(true);
+      stopTimer();
+
+      if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+        mediaRecorderRef.current.pause();
+      }
+      
     }
   }, []);
 
@@ -73,6 +84,14 @@ export default function WebcamVideo({ callback }) {
       window.removeEventListener("keydown", handleEsc);
     };
   }, [handleEsc]);
+
+  useEffect(() => {
+    return () => {
+      clearInterval(timerRef.current);
+      clearInterval(intervalID.current);
+      clearTimeout(capTimer.current);
+    };
+  }, []);
 
   const adjustTextColor = (brightness) => {
     if (brightness > 125) {
@@ -99,41 +118,57 @@ export default function WebcamVideo({ callback }) {
     [setRecordedChunks]
   );
 
-  const handleStartCaptureClick = useCallback(() => {
-    setCapturing(true);
-    mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
-      mimeType: "video/webm",
-    });
-    mediaRecorderRef.current.addEventListener(
-      "dataavailable",
-      handleDataAvailable
-    );
-    mediaRecorderRef.current.start();
-
+  const handleAnimation = useCallback(() => {
     let frameCount = 0;
-    // Define uma função para chamar a onUserMedia a cada x frames
     function animate() {
-      // Incrementa o contador de frames
       frameCount++;
-      // Se o contador for igual a x, chama a onUserMedia e zera o contador
       if (frameCount === 5) {
-        onUserMedia(webcamRef.current.stream);
-        frameCount = 0;
+        // Check if webcamRef.current and webcamRef.current.stream exist before calling onUserMedia
+        if (webcamRef.current && webcamRef.current.stream) {
+          onUserMedia(webcamRef.current.stream);
+          frameCount = 0;
+        }
       }
     }
-    // Inicia a animação
     intervalID.current = setInterval(() => {
       window.requestAnimationFrame(animate);
     }, 500);
+  }, [webcamRef]);
+  
 
+  const handleTimeout = useCallback(() => {
     setTimeout(() => {
-      mediaRecorderRef.current.stop();
+      if (mediaRecorderRef.current) {
+        mediaRecorderRef.current.stop();
+      }
       setCapturing(false);
       stopTimer();
       clearInterval(intervalID.current);
       setShowVideoPlayer(true);
     }, 180000);
-  }, [webcamRef, setCapturing, mediaRecorderRef, handleDataAvailable]);
+  }, [mediaRecorderRef, setCapturing]);
+  
+  const handleStartCaptureClick = useCallback(() => {
+    if (webcamRef.current && webcamRef.current.stream) {
+      setCapturing(true);
+      mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
+        mimeType: "video/webm",
+      });
+      mediaRecorderRef.current.addEventListener("dataavailable", handleDataAvailable);
+      mediaRecorderRef.current.start();
+      handleAnimation();
+      handleTimeout();
+    }
+  }, [webcamRef, setCapturing, mediaRecorderRef, handleDataAvailable, handleAnimation, handleTimeout]);
+  
+  const handleResumeCaptureClick = useCallback(() => {
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'paused') {
+      setCapturing(true);
+      mediaRecorderRef.current.resume();
+      handleAnimation();
+      handleTimeout();
+    }
+  }, [mediaRecorderRef, setCapturing, handleAnimation, handleTimeout]);
 
   const handleStopCaptureClick = useCallback(() => {
     mediaRecorderRef.current.stop();
@@ -270,7 +305,7 @@ export default function WebcamVideo({ callback }) {
         bottom: 0,
       }}
     >
-    {capturing && (
+    {capturing || openDialog && (
         <div>
           <AlertDialog open={openDialog} onClose={handleClose} />
         </div>
