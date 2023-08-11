@@ -10,6 +10,8 @@ function Slides({ slides }) {
   const [email, setEmail] = React.useState("");
   const [is_pesquisador, setIsPesquisador] = React.useState(false);
   const [checked, setChecked] = useState(false);
+  const [isNameValid, setIsNameValid] = useState(true);
+  const [isEmailValid, setIsEmailValid] = useState(true);
 
   const pageReloader = () => {
     setTimeout(function () {
@@ -26,12 +28,30 @@ function Slides({ slides }) {
   };
 
   const handleChange = (event) => {
-    if (event.target.id === "insert_nome") setNome(event.target.value);
-    else setEmail(event.target.value);
+    const { id, value } = event.target;
+    if (id == "insert_nome") {
+      const namePattern = /^[a-zA-Z\u00C0-\u00FF]+(?:\s[a-zA-Z\u00C0-\u00FF]+)+$/;
+      
+      const isValid = namePattern.test(value);
+      setIsNameValid(isValid);
+      if (!isValid) return;
+      
+      setNome(event.target.value);
+
+    } else {
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+      const isValid = emailPattern.test(value);
+      setIsEmailValid(isValid);
+      if (!isValid) return;
+
+      setEmail(event.target.value);
+
+    }
   };
 
   const handleEmpty = () => {
-    if (nome !== "" && email !== "") return false;
+    if ((nome !== "" && email !== "") && (isNameValid && isEmailValid)) return false;
     else return true;
   };
 
@@ -119,6 +139,7 @@ function Slides({ slides }) {
             autoComplete="off"
             onChange={handleChange}
             placeholder={slides[index]["nome"]}
+            style={{ borderColor: isNameValid ? 'initial' : 'red' }} // Apply red border if invalid
           />
         )}
 
@@ -130,6 +151,7 @@ function Slides({ slides }) {
             autoComplete="off"
             onChange={handleChange}
             placeholder={slides[index]["email"]}
+            style={{ borderColor: isEmailValid ? 'initial' : 'red' }} // Apply red border if invalid
           />
         )}
 
