@@ -508,12 +508,20 @@ export default function WebcamVideo({ callback }) {
               fontSize: "14px",
               letterSpacing: "1px",
             }}
-            onClick={() => callback("1")}
+            onClick={() => setOpenDialog(true)}
           >
             sair
           </button>
         )}
       </div>
+      {showVideoPlayer && openDialog && (
+          <div>
+            <AlertDialog
+              open={openDialog} 
+              onClose={handleClose} 
+              text="Deseja mesmo sair?" />
+          </div>
+      )}
     </div>
   );
 }

@@ -16,9 +16,19 @@ export default function AlertDialog({open, onClose, text }) {
         <div>
           {open && (
             <div className="dialog-box">
-              <p>{text}</p>
-              <button onClick={handleConfirmExit}>Confirmar Saída</button>
-              <button onClick={handleContinueRecording}>Continuar Gravando</button>
+              <h4>{text}</h4>
+              <button 
+                onClick={handleConfirmExit}
+                style={{ 
+                  background: "#fcb415",
+                  boxShadow: " 0 4px 12px rgba(	252, 180, 21, 0.5)",
+                  color: "black" 
+                  }} 
+                  > Confirmar Saída </button>
+              <button 
+                onClick={handleContinueRecording}
+                style={{color: "black"}}
+              >Continuar Gravando</button>
             </div>
           )}
         </div>
