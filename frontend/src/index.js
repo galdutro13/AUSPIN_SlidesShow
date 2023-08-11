@@ -47,7 +47,7 @@ const SLIDES = [
       "- Fale pausadamente em voz alta",
 
     subtitle: "quer continuar e gravar seu depoimento?",
-    button: "Sim",
+    button3: "Sim",
     sair: "Sair",
   },
   {

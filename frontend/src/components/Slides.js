@@ -176,35 +176,9 @@ function Slides({ slides }) {
           </button>
         )}
 
-        {slides[index]["prosseguir"] && (
-          <button
-            style={{ color: "black", fontSize: "14px", letterSpacing: "1px" }}
-            data-testid="button-next"
-            onClick={() => setIndex(index + 1)}
-            disabled={handleEmpty()}
-            className="small"
-          >
-            {" "}
-            {slides[index]["prosseguir"]}
-          </button>
-        )}
-
-        {slides[index]["seguinte"] && (
-          <button
-            style={{ color: "black", fontSize: "14px", letterSpacing: "1px" }}
-            data-testid="button-next"
-            onClick={() => setIndex(index + 1)}
-            disabled={checked === false}
-            className="small"
-          >
-            {" "}
-            {slides[index]["seguinte"]}
-          </button>
-        )}
-
         {slides[index]["button1"] && (
           <button
-            style={{ textAlign: "left" }}
+            style={{ textAlign: "left", width: "348px" }}
             data-testid="button-next"
             onClick={() => {
               if (index === 1) {
@@ -282,7 +256,6 @@ function Slides({ slides }) {
         {slides[index]["sair"] && (
           <button
             style={{
-              marginLeft: "340px",
               background: "#fcb415",
               boxShadow: " 0 4px 12px rgba(	252, 180, 21, 0.5)",
               color: "black",
@@ -298,6 +271,58 @@ function Slides({ slides }) {
           >
             {" "}
             {slides[index]["sair"]}
+          </button>
+        )}
+
+        {slides[index]["prosseguir"] && (
+          <button
+            
+            style={{ 
+              marginLeft: "340px",
+              color: "black", 
+              fontSize: "14px", 
+              letterSpacing: "1px" }}
+            data-testid="button-next"
+            onClick={() => setIndex(index + 1)}
+            disabled={handleEmpty()}
+            className="small"
+          >
+            {" "}
+            {slides[index]["prosseguir"]}
+          </button>
+        )}
+
+        {slides[index]["seguinte"] && (
+          <button
+            style={{ 
+              marginLeft: "340px",
+              color: "black", 
+              fontSize: "14px", 
+              letterSpacing: "1px" }}
+            data-testid="button-next"
+            onClick={() => setIndex(index + 1)}
+            disabled={checked === false}
+            className="small"
+          >
+            {" "}
+            {slides[index]["seguinte"]}
+          </button>
+        )}
+
+        {slides[index]["button3"] && (
+          <button
+            style={{ 
+              marginLeft: "340px",
+              color: "black", 
+              fontSize: "14px", 
+              letterSpacing: "1px" }}
+            data-testid="button-next"
+            onClick={() => setIndex(index + 1)}
+            disabled={index === slides.length - 1}
+            className="small"
+          >
+            {" "}
+            {slides[index]["button3"]}
           </button>
         )}
 

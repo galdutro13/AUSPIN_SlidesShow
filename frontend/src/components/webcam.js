@@ -305,10 +305,10 @@ export default function WebcamVideo({ callback }) {
         bottom: 0,
       }}
     >
-    {capturing || openDialog && (
-        <div>
-          <AlertDialog open={openDialog} onClose={handleClose} />
-        </div>
+      {(capturing || openDialog) && !showVideoPlayer && (
+          <div>
+            <AlertDialog open={openDialog} onClose={handleClose} text="Deseja sair da gravação?" />
+          </div>
       )}
       {showVideoPlayer == false && (
         <div className="Webcam">
